@@ -39,7 +39,7 @@ namespace WebApi
             services.AddDbContext<Project3Context>(op =>
             {
                 var conStr = Configuration.GetConnectionString("DBConnection");
-                op.UseLazyLoadingProxies().UseSqlServer(conStr);
+                op.UseSqlServer(conStr);
             });
 
             //Register Context as a Service
