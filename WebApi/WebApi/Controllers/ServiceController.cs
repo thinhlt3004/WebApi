@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -23,14 +24,56 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Service>>> GetAll()
         {
-            return Ok(await _ctx.Services.ToListAsync());
+            return await _ctx.Services.ToListAsync();
         }
 
-        [HttpGet("{serviceId}")]
-        public async Task<ActionResult<Service>> GetByID(string serviceId)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Service>> GetByID(string id)
         {
-            return Ok(await _ctx.Services.SingleOrDefaultAsync(i => i.Id == serviceId));
+            return Ok(await _ctx.Services.SingleOrDefaultAsync(i => i.Id == id));
         }
 
+        [Authorize(Roles = "Admin, Employee")]
+        [HttpPost]
+        public async Task<ActionResult> PostService(Service s)
+        {
+            _ctx.Services.Add(s);
+            await _ctx.SaveChangesAsync();
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin, Employee")]
+        [HttpPut("{id}")]
+        public async Task<ActionResult> PutService(string id, Service s)
+        {
+            if(id != s.Id)
+            {
+                return BadRequest("Id is not matched");
+            }
+            _ctx.Entry<Service>(s).State = EntityState.Modified;
+            var result = await _ctx.SaveChangesAsync();
+            if(result > 0)
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [Authorize(Roles = "Admin, Employee")]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteService(string id)
+        {
+            var ser = await _ctx.Services.SingleOrDefaultAsync(i => i.Id == id);
+            if(ser != null)
+            {
+                _ctx.Services.Remove(ser);
+                await _ctx.SaveChangesAsync();
+                return Ok();
+            }
+            return NotFound();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,10 +21,19 @@ namespace WebApi.Controllers
             _ctx = ctx;
         }
 
+        //[Consumes("application/x-www-form-urlencoded")]
+        [Authorize(Roles = "Admin, Employee")]
         [HttpGet]
-        public async Task<List<Customer>> GetAll()
+        public async Task<ActionResult<List<Customer>>> GetAll()
         {
-            return await _ctx.Customers.ToListAsync();
+            return Ok(await _ctx.Customers.ToListAsync());
+        }
+
+        [Authorize(Roles = "Admin, Employee")]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Customer>> GetByID(int id)
+        {
+            return Ok(await _ctx.Customers.SingleOrDefaultAsync(i => i.Id == id));
         }
     }
 }
