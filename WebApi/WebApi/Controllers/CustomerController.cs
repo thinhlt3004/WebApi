@@ -144,5 +144,53 @@ namespace WebApi.Controllers
             return BadRequest("Email or password is not valid !");
         }
 
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{cusId}")]
+        public async Task<ActionResult> DeleteCustomer(int cusId)
+        {
+            var cus = await _ctx.Customers.SingleOrDefaultAsync(i => i.Id == cusId);
+            if(cus != null)
+            {
+                _ctx.Customers.Remove(cus);
+                await _ctx.SaveChangesAsync();
+                return Ok();
+            }
+            return NotFound();
+        }
+
+        [Authorize(Roles = "Employee, Admin, User")]
+        [HttpPatch("update-password/{cusId}/{password}")]
+        public async Task<ActionResult> UpdatePassword(int cusId, string password)
+        {
+            var cus = await _ctx.Customers.SingleOrDefaultAsync(i => i.Id == cusId);
+            if(cus != null)
+            {
+                var hashPassword = BCrypt.Net.BCrypt.HashPassword(password);
+                cus.PasswordHash = hashPassword;
+                await _ctx.SaveChangesAsync();
+                return Ok(cus);
+            }
+            return NotFound();
+        }
+
+        [Authorize(Roles = "Employee, Admin, User")]
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateAccount(int id, Customer c)
+        {
+            if(id != c.Id)
+            {
+                return BadRequest("Id is not matched !");
+            }
+
+            _ctx.Entry<Customer>(c).State = EntityState.Modified;
+            var result = await _ctx.SaveChangesAsync();
+            if(result > 0)
+            {
+                var cus = await _ctx.Customers.SingleOrDefaultAsync(i => i.Id == id);
+                return Ok(cus);
+            }
+            return NotFound();
+        }
     }
 }

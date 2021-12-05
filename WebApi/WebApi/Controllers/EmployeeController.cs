@@ -139,7 +139,7 @@ namespace WebApi.Controllers
                 };
                 return Ok(loginResult);
             }
-            return NotFound();
+            return BadRequest("Email or password is not valid !");
         }
         //It will get all informations of token
         [Authorize(Roles = "Employee, Admin")]
@@ -193,7 +193,7 @@ namespace WebApi.Controllers
                 var hashPassword = BCrypt.Net.BCrypt.HashPassword(password);
                 emp.PasswordHash = hashPassword;
                 await _ctx.SaveChangesAsync();
-                return Ok();
+                return Ok(emp);
             }
             else
             {
