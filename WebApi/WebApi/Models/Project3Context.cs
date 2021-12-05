@@ -31,7 +31,7 @@ namespace WebApi.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
+                optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
             }
         }
 
@@ -46,12 +46,15 @@ namespace WebApi.Models
 
                 entity.ToTable("Account");
 
-                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+                entity.Property(e => e.EmployeeId)
+                    .HasMaxLength(150)
+                    .IsUnicode(false)
+                    .HasColumnName("EmployeeID");
 
                 entity.Property(e => e.ConfirmToken)
-                    .HasMaxLength(10)
-                    .HasColumnName("confirmToken")
-                    .IsFixedLength(true);
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("confirmToken");
 
                 entity.Property(e => e.Department)
                     .HasMaxLength(150)
@@ -62,6 +65,8 @@ namespace WebApi.Models
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
+                entity.Property(e => e.EmailConfirm).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.FullName)
                     .IsRequired()
                     .HasMaxLength(255);
@@ -71,10 +76,7 @@ namespace WebApi.Models
                     .IsUnicode(false)
                     .HasColumnName("image");
 
-                entity.Property(e => e.PasswordHash).IsRequired();
-
                 entity.Property(e => e.PhoneNumber)
-                    .IsRequired()
                     .HasMaxLength(150)
                     .IsUnicode(false);
 
@@ -100,10 +102,17 @@ namespace WebApi.Models
             {
                 entity.Property(e => e.Birthday).HasColumnType("date");
 
+                entity.Property(e => e.ConfirmToken)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("confirmToken");
+
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(155)
                     .IsUnicode(false);
+
+                entity.Property(e => e.EmailConfirm).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.FullName)
                     .IsRequired()
@@ -139,6 +148,11 @@ namespace WebApi.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.EndDate).HasColumnType("date");
+
+                entity.Property(e => e.ServiceOfCus)
+                    .IsRequired()
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.StartDate).HasColumnType("date");
 
@@ -233,6 +247,10 @@ namespace WebApi.Models
             modelBuilder.Entity<ServiceCustomer>(entity =>
             {
                 entity.ToTable("ServiceCustomer");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.EndDate).HasColumnType("date");
 

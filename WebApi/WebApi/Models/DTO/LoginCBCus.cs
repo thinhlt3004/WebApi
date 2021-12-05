@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-#nullable disable
-
-namespace WebApi.Models
+namespace WebApi.Models.DTO
 {
-    public partial class Customer
+    public class LoginCBCus
     {
-        public Customer()
-        {
-            ServiceCustomers = new HashSet<ServiceCustomer>();
-        }
-
         public int Id { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
@@ -21,7 +16,6 @@ namespace WebApi.Models
         public string PasswordHash { get; set; }
         public bool? EmailConfirm { get; set; }
         public string ConfirmToken { get; set; }
-
-        public virtual ICollection<ServiceCustomer> ServiceCustomers { get; set; }
+        public string AccessToken { get; set; }
     }
 }
