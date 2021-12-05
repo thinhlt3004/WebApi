@@ -89,7 +89,8 @@ namespace WebApi.Controllers
         [HttpPost("Create")]
         public async Task<ActionResult> PostCreate(Account c)
         {
-            var hashPassword = BCrypt.Net.BCrypt.HashPassword(c.PasswordHash);
+            
+            var hashPassword = BCrypt.Net.BCrypt.HashPassword("111111");
             string token = Guid.NewGuid().ToString();
             c.ConfirmToken = token;
             c.EmailConfirm = false;
@@ -103,7 +104,9 @@ namespace WebApi.Controllers
                 string url = @"http://localhost:3000/confirm/" + token;
                 string template = $"<h1>Dear Mr/Mrs {current.FullName}</h1> " +
                                   $"<p>We registed your account. Please confirm it</p>" +
-                                   $"<p>Have a nice day.</p>" +
+                                  $"<p>Your Email : {current.Email}</p>" +
+                                  $"<p>Your Password : 111111</p>" +
+                                  $"<p>Have a nice day.</p>" +
                                   $"<a href='{HtmlEncoder.Default.Encode(url)}'>Click here to confirm your account</a>";
                 await _email.SendEmailAsync(current.Email, "Confirm Account", template);
                 return Ok();
@@ -174,7 +177,8 @@ namespace WebApi.Controllers
             {
                 acc.EmailConfirm = true;
                 await _ctx.SaveChangesAsync();
-                return Ok();
+                var updatedAcc = await _ctx.Accounts.SingleOrDefaultAsync(i => i.ConfirmToken == token);
+                return Ok(updatedAcc);
             }
             return BadRequest();
         }
