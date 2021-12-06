@@ -12,7 +12,7 @@ namespace WebApi.Models
             EmpOfCustomers = new HashSet<EmpOfCustomer>();
         }
 
-        public string Id { get; set; }
+        public int Id { get; set; }
         public int? CustomerId { get; set; }
         public string ServiceId { get; set; }
         public DateTime? StartDate { get; set; }

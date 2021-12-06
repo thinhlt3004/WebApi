@@ -88,13 +88,13 @@ namespace WebApi.Models
                 entity.HasOne(d => d.DepartmentNavigation)
                     .WithMany(p => p.Accounts)
                     .HasForeignKey(d => d.Department)
-                    .HasConstraintName("FK_Users_Departments1");
+                    .HasConstraintName("FK_Account_Departments");
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Accounts)
                     .HasForeignKey(d => d.RoleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Users_Roles");
+                    .HasConstraintName("FK_Account_Roles");
             });
 
             modelBuilder.Entity<Customer>(entity =>
@@ -148,24 +148,20 @@ namespace WebApi.Models
 
                 entity.Property(e => e.EndDate).HasColumnType("date");
 
-                entity.Property(e => e.ServiceOfCus)
-                    .IsRequired()
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.StartDate).HasColumnType("date");
+
+                entity.Property(e => e.Status).HasDefaultValueSql("((1))");
+
+                entity.HasOne(d => d.Emp)
+                    .WithMany(p => p.EmpOfCustomers)
+                    .HasForeignKey(d => d.EmpId)
+                    .HasConstraintName("FK_EmpOfCustomer_Account");
 
                 entity.HasOne(d => d.ServiceOfCusNavigation)
                     .WithMany(p => p.EmpOfCustomers)
                     .HasForeignKey(d => d.ServiceOfCus)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_EmpOfCustomer_Account");
-
-                entity.HasOne(d => d.ServiceOfCus1)
-                    .WithMany(p => p.EmpOfCustomers)
-                    .HasForeignKey(d => d.ServiceOfCus)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_EmpOfCustomer_ServiceCustomer");
+                    .HasConstraintName("FK_EmpOfCustomer_EmpOfCustomer");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -216,10 +212,6 @@ namespace WebApi.Models
             modelBuilder.Entity<ServiceCustomer>(entity =>
             {
                 entity.ToTable("ServiceCustomer");
-
-                entity.Property(e => e.Id)
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
 
                 entity.Property(e => e.EmployeeHandle).HasDefaultValueSql("((0))");
 

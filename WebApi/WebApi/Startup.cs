@@ -36,14 +36,14 @@ namespace WebApi
             services.AddControllers();
 
             //Register DBContext
-            //services.AddDbContext<Project3Context>(op =>
-            //{
-            //    var conStr = Configuration.GetConnectionString("DBConnection");
-            //    op.UseSqlServer(conStr);
-            //});
+            services.AddDbContext<Project3Context>(op =>
+            {
+                var conStr = Configuration.GetConnectionString("DBConnection");
+                op.UseSqlServer(conStr);
+            });
 
-            ////Register Context as a Service
-            //services.AddTransient<Project3Context>();
+            //Register Context as a Service
+            services.AddTransient<Project3Context>();
 
             //Add Cors
             services.AddCors();
