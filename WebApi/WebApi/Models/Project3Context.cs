@@ -21,7 +21,6 @@ namespace WebApi.Models
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<EmpOfCustomer> EmpOfCustomers { get; set; }
-        public virtual DbSet<RequestCustomer> RequestCustomers { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Service> Services { get; set; }
         public virtual DbSet<ServiceCategory> ServiceCategories { get; set; }
@@ -169,36 +168,6 @@ namespace WebApi.Models
                     .HasConstraintName("FK_EmpOfCustomer_ServiceCustomer");
             });
 
-            modelBuilder.Entity<RequestCustomer>(entity =>
-            {
-                entity.ToTable("RequestCustomer");
-
-                entity.Property(e => e.Date).HasColumnType("date");
-
-                entity.Property(e => e.Email)
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.FullName)
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Message).HasColumnType("text");
-
-                entity.Property(e => e.ServiceId)
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Subject)
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.Service)
-                    .WithMany(p => p.RequestCustomers)
-                    .HasForeignKey(d => d.ServiceId)
-                    .HasConstraintName("FK_RequestCustomer_Services");
-            });
-
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.Property(e => e.Role1)
@@ -251,6 +220,8 @@ namespace WebApi.Models
                 entity.Property(e => e.Id)
                     .HasMaxLength(150)
                     .IsUnicode(false);
+
+                entity.Property(e => e.EmployeeHandle).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.EndDate).HasColumnType("date");
 

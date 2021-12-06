@@ -18,6 +18,7 @@ namespace WebApi.Models
         public DateTime? StartDate { get; set; }
         public double? CurrentPrice { get; set; }
         public DateTime? EndDate { get; set; }
+        public bool? EmployeeHandle { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Service Service { get; set; }

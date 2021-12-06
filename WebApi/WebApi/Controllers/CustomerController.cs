@@ -77,11 +77,11 @@ namespace WebApi.Controllers
             return Ok(await _ctx.Customers.SingleOrDefaultAsync(i => i.Id == id));
         }
 
-        [Authorize(Roles = "Admin, Employee")]
+        //[Authorize(Roles = "Admin, Employee")]
         [HttpPost]
         public async Task<ActionResult> PostCustomer(Customer c)
         {
-            var hashPassword = BCrypt.Net.BCrypt.HashPassword("123456");
+            var hashPassword = BCrypt.Net.BCrypt.HashPassword(c.PasswordHash);
             string token = Guid.NewGuid().ToString();
 
             c.ConfirmToken = token;

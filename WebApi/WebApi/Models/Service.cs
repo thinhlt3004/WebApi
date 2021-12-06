@@ -9,7 +9,6 @@ namespace WebApi.Models
     {
         public Service()
         {
-            RequestCustomers = new HashSet<RequestCustomer>();
             ServiceCustomers = new HashSet<ServiceCustomer>();
         }
 
@@ -21,7 +20,6 @@ namespace WebApi.Models
         public string Image { get; set; }
 
         public virtual ServiceCategory ServiceCategory { get; set; }
-        public virtual ICollection<RequestCustomer> RequestCustomers { get; set; }
         public virtual ICollection<ServiceCustomer> ServiceCustomers { get; set; }
     }
 }
