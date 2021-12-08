@@ -61,7 +61,7 @@ namespace WebApi.Controllers
                 return NotFound();
             }
         }
-
+        //Admin , Employee, User
         [Authorize(Roles = "Admin, Employee")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteService(string id)

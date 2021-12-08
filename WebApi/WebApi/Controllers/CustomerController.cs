@@ -96,7 +96,6 @@ namespace WebApi.Controllers
                 string template = $"<h1>Dear Mr/Mrs {current.FullName}</h1> " +
                                   $"<p>Thanks for using our services. Your account is below :</p>" +
                                   $"<p>Your Email : {current.Email}</p>" +
-                                  $"<p>Your Password : 123456</p>" +
                                   $"<p>Have a nice day.</p>" +
                                   $"<a href='{HtmlEncoder.Default.Encode(url)}'>Click here to confirm your account</a>";
                 await _email.SendEmailAsync(current.Email, "Confirm Account", template);
@@ -116,6 +115,32 @@ namespace WebApi.Controllers
                 return Ok();
             }
             return NotFound("Cant find customer");
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("GetUserByToken")]
+        public async Task<ActionResult> GetUserByToken()
+        {
+            var claimsIdentity = HttpContext.User.Identity as ClaimsIdentity;
+            if (claimsIdentity.Claims.Count() != 0)
+            {
+                IEnumerable<Claim> claims = claimsIdentity.Claims;
+                var expTime = long.Parse(claims.FirstOrDefault(c => c.Type == "exp").Value) * 1000;
+                DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                long ms = (long)(DateTime.UtcNow - epoch).TotalMilliseconds;
+                //var expTime = claims.FirstOrDefault(c => c.Type == "exp");
+                if (ms < expTime)
+                {
+                    var id = claims.FirstOrDefault(c => c.Type == "Id").Value;
+                    var user = await _ctx.Customers.SingleOrDefaultAsync(c => c.Id == int.Parse(id));
+                    return Ok(user);
+                }
+                else
+                {
+                    return BadRequest("Expire Time !");
+                }
+            }
+            return BadRequest("You are not authenticated");
         }
 
 
@@ -178,12 +203,25 @@ namespace WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateAccount(int id, Customer c)
         {
-            if(id != c.Id)
+            if (id != c.Id)
             {
                 return BadRequest("Id is not matched !");
             }
+             var cusCheck = await _ctx.Customers.Where(x => x.Email == c.Email).SingleOrDefaultAsync();
+            if (cusCheck != null)
+            {
+                if(cusCheck.Id != id)
+                {
 
-            _ctx.Entry<Customer>(c).State = EntityState.Modified;
+                return BadRequest("Email is existed !");
+                }
+            }
+            var current = await _ctx.Customers.SingleOrDefaultAsync(i => i.Id == id);
+            current.FullName = c.FullName;
+            current.Gender = c.Gender;
+            current.Email = c.Email;
+            current.PhoneNumber = c.PhoneNumber;
+            current.Birthday = c.Birthday;
             var result = await _ctx.SaveChangesAsync();
             if(result > 0)
             {
