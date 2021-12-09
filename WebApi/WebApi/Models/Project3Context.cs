@@ -217,6 +217,10 @@ namespace WebApi.Models
 
                 entity.Property(e => e.EndDate).HasColumnType("date");
 
+                entity.Property(e => e.Product).HasMaxLength(255);
+
+                entity.Property(e => e.ProductPaid).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.ServiceId)
                     .IsRequired()
                     .HasMaxLength(150)

@@ -49,5 +49,20 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin, Employee")]
+        [HttpPatch("UpdateCountandTotalPrice/{serOfCusId}/{count}")]
+        public async Task<ActionResult> PatchUpdateProductPaid(int serOfCusId, int count)
+        {
+            var ser = await _ctx.ServiceCustomers.SingleOrDefaultAsync(i => i.Id == serOfCusId);
+            if(ser != null)
+            {
+                ser.ProductPaid = ser.ProductPaid + count;
+                ser.TotalPriceofProduct = ser.ProductPaid * ser.ProductPrice;
+                await _ctx.SaveChangesAsync();
+                return Ok();
+            }
+            return NotFound();
+
+        }
     }
 }

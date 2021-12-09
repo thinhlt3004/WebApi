@@ -19,6 +19,11 @@ namespace WebApi.Models
         public double? CurrentPrice { get; set; }
         public DateTime? EndDate { get; set; }
         public bool? EmployeeHandle { get; set; }
+        public string Product { get; set; }
+        public double? ProductPrice { get; set; }
+        public int? CountOfProduct { get; set; }
+        public int? ProductPaid { get; set; }
+        public double? TotalPriceofProduct { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Service Service { get; set; }

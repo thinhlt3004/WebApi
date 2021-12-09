@@ -42,7 +42,7 @@ namespace WebApi
                 op.UseSqlServer(conStr);
             });
 
-            //Register Context as a Service
+            ////Register Context as a Service
             services.AddTransient<Project3Context>();
 
             //Add Cors
