@@ -32,6 +32,14 @@ namespace WebApi.Controllers
         {
             return Ok(await _ctx.Services.SingleOrDefaultAsync(i => i.Id == id));
         }
+        //Get Service by service Category
+
+        [HttpGet("get-service-by-cate/{cateId}")]
+        public async Task<ActionResult<List<Service>>> GetListServices(int cateId)
+        {
+            return await _ctx.Services.Where(i => i.ServiceCategoryId == cateId).ToListAsync();
+        }
+
 
         [Authorize(Roles = "Admin, Employee")]
         [HttpPost]

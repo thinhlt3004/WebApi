@@ -32,7 +32,7 @@ namespace WebApi.Controllers
         [HttpGet("{cusId}")]
         public async Task<ActionResult<List<ServiceCustomer>>> GetByCustomerID(int cusId)
         {
-            return Ok(await _ctx.ServiceCustomers.Where(i => i.CustomerId == cusId).ToListAsync());
+            return Ok(await _ctx.ServiceCustomers.Where(i => i.CustomerId == cusId).OrderByDescending(x => x.Id).ToListAsync());
         } 
 
         [Authorize(Roles = "User")]

@@ -63,7 +63,7 @@ namespace WebApi.Controllers
             return Ok(await _ctx.Accounts.ToListAsync());
         }
 
-        [Authorize(Roles = "Employee, Admin")]
+        [Authorize(Roles = "Employee, Admin, User")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> Get(string id)
         {
