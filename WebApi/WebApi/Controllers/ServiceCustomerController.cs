@@ -35,6 +35,14 @@ namespace WebApi.Controllers
             return Ok(await _ctx.ServiceCustomers.Where(i => i.CustomerId == cusId).OrderByDescending(x => x.Id).ToListAsync());
         } 
 
+        [Authorize]
+        [HttpGet("get-current-service-by-id/{serviceCusId}")]
+        public async Task<ActionResult<ServiceCustomer>> GetByServiceCusId(int serviceCusId)
+        {
+            return Ok(await _ctx.ServiceCustomers.SingleOrDefaultAsync(i => i.Id == serviceCusId));
+        }
+
+
         [Authorize(Roles = "User")]
         [HttpPost]
         public async Task<ActionResult> PostCreate(ServiceCustomer sc)
