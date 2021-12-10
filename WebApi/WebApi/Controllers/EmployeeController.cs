@@ -85,6 +85,8 @@ namespace WebApi.Controllers
         //"department": "D02",
         //"image": ""
         //}
+
+        //Comment line below to generate new account , change role to admin 
         [Authorize(Roles = "Admin")]
         [HttpPost("Create")]
         public async Task<ActionResult> PostCreate(Account c)
