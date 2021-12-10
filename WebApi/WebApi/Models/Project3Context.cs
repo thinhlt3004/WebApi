@@ -21,6 +21,7 @@ namespace WebApi.Models
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<EmpOfCustomer> EmpOfCustomers { get; set; }
+        public virtual DbSet<Report> Reports { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Service> Services { get; set; }
         public virtual DbSet<ServiceCategory> ServiceCategories { get; set; }
@@ -164,6 +165,24 @@ namespace WebApi.Models
                     .HasConstraintName("FK_EmpOfCustomer_EmpOfCustomer");
             });
 
+            modelBuilder.Entity<Report>(entity =>
+            {
+                entity.ToTable("Report");
+
+                entity.Property(e => e.Count).HasColumnName("count");
+
+                entity.Property(e => e.Date)
+                    .HasColumnType("date")
+                    .HasColumnName("date");
+
+                entity.Property(e => e.TotalPrice).HasColumnName("totalPrice");
+
+                entity.HasOne(d => d.ServiceOfCusNavigation)
+                    .WithMany(p => p.Reports)
+                    .HasForeignKey(d => d.ServiceOfCus)
+                    .HasConstraintName("FK_Report_ServiceCustomer");
+            });
+
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.Property(e => e.Role1)
@@ -218,8 +237,6 @@ namespace WebApi.Models
                 entity.Property(e => e.EndDate).HasColumnType("date");
 
                 entity.Property(e => e.Product).HasMaxLength(255);
-
-                entity.Property(e => e.ProductPaid).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.ServiceId)
                     .IsRequired()

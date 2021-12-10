@@ -10,6 +10,7 @@ namespace WebApi.Models
         public ServiceCustomer()
         {
             EmpOfCustomers = new HashSet<EmpOfCustomer>();
+            Reports = new HashSet<Report>();
         }
 
         public int Id { get; set; }
@@ -21,12 +22,10 @@ namespace WebApi.Models
         public bool? EmployeeHandle { get; set; }
         public string Product { get; set; }
         public double? ProductPrice { get; set; }
-        public int? CountOfProduct { get; set; }
-        public int? ProductPaid { get; set; }
-        public double? TotalPriceofProduct { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Service Service { get; set; }
         public virtual ICollection<EmpOfCustomer> EmpOfCustomers { get; set; }
+        public virtual ICollection<Report> Reports { get; set; }
     }
 }
