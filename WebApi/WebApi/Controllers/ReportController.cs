@@ -26,7 +26,7 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult> PostCreate(Report r)
         {
-            var current = await _ctx.Reports.SingleOrDefaultAsync(i => i.Date.Value == r.Date.Value);
+            var current = await _ctx.Reports.SingleOrDefaultAsync(i => i.Date.Value == r.Date.Value && i.ServiceOfCus == r.ServiceOfCus);
             if(current != null)
             {
                 return BadRequest("Today is had report");
