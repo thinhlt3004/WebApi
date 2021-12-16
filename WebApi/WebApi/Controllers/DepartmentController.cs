@@ -20,13 +20,14 @@ namespace WebApi.Controllers
         {
             _ctx = ctx;
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<Department>>> GetAll()
         {
             return await _ctx.Departments.ToListAsync();
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Department>> GetAll(string id)
         {

@@ -33,7 +33,8 @@ namespace WebApi.Controllers
             }
             _ctx.Reports.Add(r);           
             await _ctx.SaveChangesAsync();
-            return Ok();
+            var cb = await _ctx.Reports.SingleOrDefaultAsync(i => i.Date.Value == r.Date.Value && i.ServiceOfCus == r.ServiceOfCus);
+            return Ok(cb);
         }
 
         [Authorize]
@@ -46,20 +47,28 @@ namespace WebApi.Controllers
         }
 
         [Authorize]
-        [HttpGet("get-current-month")]
-        public async Task<ActionResult> GetCurrentMonth()
+        [HttpGet("get-current-month/{cusSerID}")]
+        public async Task<ActionResult> GetCurrentMonth(int cusSerID)
         {
             int cMonth = DateTime.Now.Month;
-            var result = await _ctx.Reports.Where(i => i.Date.Value.Month == cMonth).ToListAsync();
+            var result = await _ctx.Reports.Where(i => i.ServiceOfCus == cusSerID && i.Date.Value.Month == cMonth).ToListAsync();
             return Ok(result);
         }
 
         [Authorize]
-        [HttpGet("get-last-month")]
-        public async Task<ActionResult> GetLastMonth()
+        [HttpGet("get-last-month/{cusSerID}")]
+        public async Task<ActionResult> GetLastMonth(int cusSerID)
         {
             int cMonth = DateTime.Now.Month - 1;
-            var result = await _ctx.Reports.Where(i => i.Date.Value.Month == cMonth).ToListAsync();
+            var result = await _ctx.Reports.Where(i => i.ServiceOfCus == cusSerID && i.Date.Value.Month == cMonth).ToListAsync();
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin, Employee")]
+        [HttpGet("get-by-cus-month/{cusSerID}/{month}")]
+        public async Task<ActionResult> GetbyCusMonth(int cusSerID, int month)
+        {
+            var result = await _ctx.Reports.Where(i => i.ServiceOfCus == cusSerID && i.Date.Value.Month == month).ToListAsync();
             return Ok(result);
         }
 
@@ -73,6 +82,21 @@ namespace WebApi.Controllers
                 date = i.Date.Value,
                 amount = i.Count.Value
             }).ToListAsync());
+        }
+
+        [Authorize(Roles = "Admin, Employee")]
+        [HttpPut("update-data")]
+        public async Task<ActionResult> Update(EmOfCusUpdateModel m)
+        {
+            var currentReport = await _ctx.Reports.SingleOrDefaultAsync(i => i.ServiceOfCus == m.ServiceOfCus && i.Date.Value == m.date);
+            if(currentReport != null)
+            {
+                currentReport.Count = m.count;
+                currentReport.TotalPrice = m.totalPrice;
+                await _ctx.SaveChangesAsync();
+                return Ok(currentReport);
+            }
+            return NotFound();
         }
     }
 }

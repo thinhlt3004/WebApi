@@ -47,7 +47,8 @@ namespace WebApi.Controllers
         {
             _ctx.Services.Add(s);
             await _ctx.SaveChangesAsync();
-            return Ok();
+            var current = await _ctx.Services.SingleOrDefaultAsync(i => i.Id == s.Id);
+            return Ok(current);
         }
 
         [Authorize(Roles = "Admin, Employee")]
@@ -62,7 +63,8 @@ namespace WebApi.Controllers
             var result = await _ctx.SaveChangesAsync();
             if(result > 0)
             {
-                return Ok();
+                var current = await _ctx.Services.SingleOrDefaultAsync(i => i.Id == id);
+                return Ok(current);
             }
             else
             {

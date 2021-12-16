@@ -103,7 +103,7 @@ namespace WebApi.Controllers
             {
                 var current = await _ctx.Accounts.SingleOrDefaultAsync(i => i.Email == c.Email);
                 //Change redirect to website from email of employee HERE
-                string url = @"http://localhost:3000/confirm/" + token;
+                string url = @"http://localhost:3000/confirm-account/" + token;
                 string template = $"<h1>Dear Mr/Mrs {current.FullName}</h1> " +
                                   $"<p>We registed your account. Please confirm it</p>" +
                                   $"<p>Your Email : {current.Email}</p>" +
@@ -111,7 +111,7 @@ namespace WebApi.Controllers
                                   $"<p>Have a nice day.</p>" +
                                   $"<a href='{HtmlEncoder.Default.Encode(url)}'>Click here to confirm your account</a>";
                 await _email.SendEmailAsync(current.Email, "Confirm Account", template);
-                return Ok();
+                return Ok(current);
             }
             return BadRequest();
         }
@@ -231,7 +231,8 @@ namespace WebApi.Controllers
             var result = await _ctx.SaveChangesAsync();
             if(result > 0)
             {
-                return Ok();
+                var emp = await _ctx.Accounts.SingleOrDefaultAsync(i => i.EmployeeId == id);
+                return Ok(emp);
             }
             else
             {

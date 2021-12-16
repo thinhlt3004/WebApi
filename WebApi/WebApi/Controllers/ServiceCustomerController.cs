@@ -57,5 +57,19 @@ namespace WebApi.Controllers
             return BadRequest();
         }
        
+
+        [Authorize(Roles = "Admin, Employee")]
+        [HttpGet("get-report-profit")]
+        public async Task<ActionResult> GetProfit()
+        {
+            int cYear = DateTime.Now.Year;
+            var report = await _ctx
+                .ServiceCustomers
+                .Where(i => i.StartDate.Value.Year == cYear)
+                .GroupBy(i => i.StartDate.Value.Month)
+                .Select(i => new { month = i.Key, totalProfit = i.Sum(v => v.CurrentPrice) })
+                .ToListAsync();
+            return Ok(report);
+        }
     }
 }
