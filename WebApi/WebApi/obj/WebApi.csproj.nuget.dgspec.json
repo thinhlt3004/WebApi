@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\EOS-project3\\WebApi\\WebApi\\WebApi.csproj": {}
+    "C:\\Users\\ltt34\\Downloads\\T12008M0_Group4_ExcellOnServices\\Source\\WebApi\\WebApi\\WebApi\\WebApi.csproj": {}
   },
   "projects": {
-    "E:\\EOS-project3\\WebApi\\WebApi\\WebApi.csproj": {
+    "C:\\Users\\ltt34\\Downloads\\T12008M0_Group4_ExcellOnServices\\Source\\WebApi\\WebApi\\WebApi\\WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\EOS-project3\\WebApi\\WebApi\\WebApi.csproj",
+        "projectUniqueName": "C:\\Users\\ltt34\\Downloads\\T12008M0_Group4_ExcellOnServices\\Source\\WebApi\\WebApi\\WebApi\\WebApi.csproj",
         "projectName": "WebApi",
-        "projectPath": "E:\\EOS-project3\\WebApi\\WebApi\\WebApi.csproj",
+        "projectPath": "C:\\Users\\ltt34\\Downloads\\T12008M0_Group4_ExcellOnServices\\Source\\WebApi\\WebApi\\WebApi\\WebApi.csproj",
         "packagesPath": "C:\\Users\\ltt34\\.nuget\\packages\\",
-        "outputPath": "E:\\EOS-project3\\WebApi\\WebApi\\obj\\",
+        "outputPath": "C:\\Users\\ltt34\\Downloads\\T12008M0_Group4_ExcellOnServices\\Source\\WebApi\\WebApi\\WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -103,7 +103,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

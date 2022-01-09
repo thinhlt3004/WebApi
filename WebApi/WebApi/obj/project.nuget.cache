@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Nq/XmSjQGTMaZjlb+upJAJV37eEcfw/q0Kz7r/62jGhGQSwxfAfY8b9Q6SJKkvWmNdbO7SGc0VwNcOdz4riQVA==",
+  "dgSpecHash": "7ZJeY+cXnypNAjVQxV4E3K1WaXkm1DNjFWbkIIXYnoIQUQKfsyynUP2CyxVUDNxje3MUK6LvL35pcyfAEGPAEQ==",
   "success": true,
-  "projectFilePath": "E:\\EOS-project3\\WebApi\\WebApi\\WebApi.csproj",
+  "projectFilePath": "C:\\Users\\ltt34\\Downloads\\T12008M0_Group4_ExcellOnServices\\Source\\WebApi\\WebApi\\WebApi\\WebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ltt34\\.nuget\\packages\\bcrypt.net-next\\4.0.2\\bcrypt.net-next.4.0.2.nupkg.sha512",
     "C:\\Users\\ltt34\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",

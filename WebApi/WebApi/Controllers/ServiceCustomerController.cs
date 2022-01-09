@@ -62,7 +62,7 @@ namespace WebApi.Controllers
         [HttpGet("get-report-profit")]
         public async Task<ActionResult> GetProfit()
         {
-            int cYear = DateTime.Now.Year;
+            int cYear = DateTime.Now.Year - 1;
             var report = await _ctx
                 .ServiceCustomers
                 .Where(i => i.StartDate.Value.Year == cYear)
